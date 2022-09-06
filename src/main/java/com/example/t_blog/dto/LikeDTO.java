@@ -1,14 +1,11 @@
 package com.example.t_blog.dto;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class CommentDTO {
+public class LikeDTO {
 
-    private String comment;
+    private boolean isLiked;
 }

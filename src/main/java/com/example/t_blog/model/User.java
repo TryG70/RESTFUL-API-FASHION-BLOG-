@@ -1,5 +1,6 @@
 package com.example.t_blog.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -36,12 +37,15 @@ public class User {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "user")
     private List<Post> postList = new ArrayList<>();
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "user")
     private List<Comment> commentList = new ArrayList<>();
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "user")
     private List<Like> LikeList = new ArrayList<>();
 

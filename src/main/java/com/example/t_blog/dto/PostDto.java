@@ -15,4 +15,6 @@ public class PostDto {
     private String body;
 
     private String image;
+
+    private int user_id;
 }
