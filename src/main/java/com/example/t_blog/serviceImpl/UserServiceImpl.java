@@ -14,7 +14,7 @@ import com.example.t_blog.repository.PostRepository;
 import com.example.t_blog.repository.UserRepository;
 import com.example.t_blog.response.*;
 import com.example.t_blog.service.UserService;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.Normalizer;
@@ -24,13 +24,21 @@ import java.util.Locale;
 import java.util.regex.Pattern;
 
 @Service
-@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    private UserRepository userRepository;
-    private PostRepository postRepository;
-    private CommentRepository commentRepository;
-    private LikeRepository likeRepository;
+    private final UserRepository userRepository;
+    private final PostRepository postRepository;
+    private final CommentRepository commentRepository;
+    private final LikeRepository likeRepository;
+
+
+    @Autowired
+    public UserServiceImpl(UserRepository userRepository, PostRepository postRepository, CommentRepository commentRepository, LikeRepository likeRepository) {
+        this.userRepository = userRepository;
+        this.postRepository = postRepository;
+        this.commentRepository = commentRepository;
+        this.likeRepository = likeRepository;
+    }
 
     private static final Pattern NONLATIN = Pattern.compile("[^\\w-]");
     private static final Pattern WHITESPACE = Pattern.compile("[\\s]");
@@ -97,7 +105,7 @@ public class UserServiceImpl implements UserService {
         Post post = findPostById(post_id);
 
         Comment comment = new Comment();
-        comment.setComment(comment.getComment());
+        comment.setComment(commentDTO.getComment());
         comment.setUser(user);
         comment.setPost(post);
 
@@ -137,7 +145,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public PostSearchResponse searchForPost(String keyWord) {
 
-        List<Post> postList = postRepository.findByTitleContaining(keyWord);
+        List<Post> postList = postRepository.findByTitleContainingIgnoreCase(keyWord);
 
         return new PostSearchResponse("success", LocalDateTime.now(), postList);
     }
@@ -145,7 +153,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public CommentSearchResponse searchForComment(String keyWord) {
 
-        List<Comment> commentList = commentRepository.findByCommentContaining(keyWord);
+        List<Comment> commentList = commentRepository.findByCommentContainingIgnoreCase(keyWord);
 
         return new CommentSearchResponse("success", LocalDateTime.now(), commentList);
     }
@@ -160,5 +168,11 @@ public class UserServiceImpl implements UserService {
 
     public Post findPostById(int id) {
         return postRepository.findById(id).orElseThrow(() -> new PostNotFoundException("Post with ID: " + id + " Not Found"));
+    }
+
+    public AllPostsResponse allPosts() {
+        List<Post> postList = postRepository.findAll();
+
+        return new AllPostsResponse("success", LocalDateTime.now(), postList);
     }
 }

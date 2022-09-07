@@ -3,6 +3,8 @@ package com.example.t_blog.service;
 import com.example.t_blog.dto.*;
 import com.example.t_blog.response.*;
 
+import java.util.List;
+
 public interface UserService {
 
     RegisterResponse signUp(UserDTO userDTO);
@@ -18,6 +20,8 @@ public interface UserService {
     PostSearchResponse searchForPost(String title);
 
     CommentSearchResponse searchForComment(String keyWord);
+
+    AllPostsResponse allPosts();
 
 
 }

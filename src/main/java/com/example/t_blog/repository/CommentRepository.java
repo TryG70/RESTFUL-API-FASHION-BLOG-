@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Integer> {
 
-    List<Comment> findByCommentContaining(String keyword);
+    List<Comment> findByCommentContainingIgnoreCase(String keyword);
 }
