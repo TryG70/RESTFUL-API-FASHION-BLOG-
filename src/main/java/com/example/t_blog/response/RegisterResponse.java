@@ -1,17 +1,17 @@
 package com.example.t_blog.response;
 
 
-import com.example.t_blog.model.User;
+import com.example.t_blog.dto.UserDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
 public class RegisterResponse {
 
     private String message;
-    private LocalDateTime time;
-    private User user;
+    private LocalDate time;
+    private UserDTO userDTO;
 }

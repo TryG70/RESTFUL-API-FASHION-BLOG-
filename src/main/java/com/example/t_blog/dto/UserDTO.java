@@ -1,11 +1,12 @@
 package com.example.t_blog.dto;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 
 @Data
+@ToString
+@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserDTO {
@@ -14,6 +15,7 @@ public class UserDTO {
 
     private String email;
 
+    @JsonIgnore
     private String password;
 
     private String role;

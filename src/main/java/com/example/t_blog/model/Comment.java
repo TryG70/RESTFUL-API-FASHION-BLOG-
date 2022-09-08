@@ -7,10 +7,12 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Getter
 @Setter
+@ToString
+@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -24,10 +26,10 @@ public class Comment {
     private String comment;
 
     @CreationTimestamp
-    private LocalDateTime createdAt;
+    private LocalDate createdAt;
 
     @UpdateTimestamp
-    private LocalDateTime updatedAt;
+    private LocalDate updatedAt;
 
     @JsonBackReference
     @ManyToOne

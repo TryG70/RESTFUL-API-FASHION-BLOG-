@@ -3,13 +3,13 @@ package com.example.t_blog.response;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
 public class LoginResponse {
 
     private String message;
-    private LocalDateTime time;
+    private LocalDate time;
 
 }

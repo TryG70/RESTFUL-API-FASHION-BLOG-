@@ -4,7 +4,7 @@ import com.example.t_blog.model.Comment;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 
@@ -13,6 +13,6 @@ import java.util.List;
 public class CommentSearchResponse {
 
     private String message;
-    private LocalDateTime time;
+    private LocalDate time;
     private List<Comment> commentSearch;
 }

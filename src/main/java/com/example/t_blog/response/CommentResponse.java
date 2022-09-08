@@ -4,7 +4,7 @@ import com.example.t_blog.model.Comment;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 
 @Data
@@ -12,6 +12,6 @@ import java.time.LocalDateTime;
 public class CommentResponse {
 
     private String message;
-    private LocalDateTime time;
+    private LocalDate time;
     private Comment comment;
 }

@@ -8,12 +8,14 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 @Setter
+@EqualsAndHashCode
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -33,10 +35,10 @@ public class Post {
     private String slug;
 
     @CreationTimestamp
-    private LocalDateTime createdAt;
+    private LocalDate createdAt;
 
     @UpdateTimestamp
-    private LocalDateTime updatedAt;
+    private LocalDate updatedAt;
 
 
     @JsonBackReference
@@ -46,9 +48,11 @@ public class Post {
 
     @JsonManagedReference
     @OneToMany(mappedBy = "post")
+    @ToString.Exclude
     private List<Comment> commentList = new ArrayList<>();
 
     @JsonManagedReference
     @OneToMany(mappedBy = "post")
+    @ToString.Exclude
     private List<Like> likeList = new ArrayList<>();
 }

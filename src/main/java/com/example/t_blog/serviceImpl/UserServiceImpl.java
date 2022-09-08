@@ -1,6 +1,7 @@
 package com.example.t_blog.serviceImpl;
 
 import com.example.t_blog.dto.*;
+import com.example.t_blog.exception.CommentNotFoundException;
 import com.example.t_blog.exception.PostAlreadyLikedException;
 import com.example.t_blog.exception.PostNotFoundException;
 import com.example.t_blog.exception.UserNotFoundException;
@@ -18,7 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.Normalizer;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Locale;
 import java.util.regex.Pattern;
@@ -53,7 +54,7 @@ public class UserServiceImpl implements UserService {
         user.setPassword(userDTO.getPassword());
         user.setRole(userDTO.getRole());
         userRepository.save(user);
-        return new RegisterResponse("success", LocalDateTime.now(), user);
+        return new RegisterResponse("success", LocalDate.now(), userDTO);
     }
 
     @Override
@@ -65,10 +66,10 @@ public class UserServiceImpl implements UserService {
 
         if(user != null) {
             if(user.getPassword().equals(loginDTO.getPassword())) {
-                loginResponse = new LoginResponse("success", LocalDateTime.now());
+                loginResponse = new LoginResponse("success", LocalDate.now());
             }
         } else {
-            loginResponse = new LoginResponse("password mismatch", LocalDateTime.now());
+            loginResponse = new LoginResponse("password mismatch", LocalDate.now());
         }
 
         return loginResponse;
@@ -94,7 +95,7 @@ public class UserServiceImpl implements UserService {
         post.setUser(user);
 
         postRepository.save(post);
-        return new CreatePostResponse("success", LocalDateTime.now(),post);
+        return new CreatePostResponse("success", LocalDate.now(), post);
 
     }
 
@@ -110,7 +111,7 @@ public class UserServiceImpl implements UserService {
         comment.setPost(post);
 
         commentRepository.save(comment);
-        return new CommentResponse("success", LocalDateTime.now(), comment);
+        return new CommentResponse("success", LocalDate.now(), comment);
     }
 
     @Override
@@ -120,7 +121,7 @@ public class UserServiceImpl implements UserService {
         Post post = findPostById(post_id);
 
         Like duplicateLike = likeRepository.findAllByUserAndPost(user, post);
-        LikeResponse likeResponse = null;
+        LikeResponse likeResponse;
 
         if (duplicateLike == null) {
             Like like = new Like();
@@ -132,7 +133,7 @@ public class UserServiceImpl implements UserService {
             List<Like> likeList = likeRepository.findAllByPost(post);
 
             likeRepository.save(like);
-            likeResponse = new LikeResponse("success", LocalDateTime.now(), like, likeList.size());
+            likeResponse = new LikeResponse("success", LocalDate.now(), like, likeList.size());
 
         } else {
             likeRepository.delete(duplicateLike);
@@ -145,17 +146,17 @@ public class UserServiceImpl implements UserService {
     @Override
     public PostSearchResponse searchForPost(String keyWord) {
 
-        List<Post> postList = postRepository.findByTitleContainingIgnoreCase(keyWord);
+        List<Post> postList = postRepository.findByTitleContainingIgnoreCase(keyWord).orElseThrow(() -> new PostNotFoundException("There's no match for the keyword: " + keyWord));
 
-        return new PostSearchResponse("success", LocalDateTime.now(), postList);
+        return new PostSearchResponse("success", LocalDate.now(), postList);
     }
 
     @Override
     public CommentSearchResponse searchForComment(String keyWord) {
 
-        List<Comment> commentList = commentRepository.findByCommentContainingIgnoreCase(keyWord);
+        List<Comment> commentList = commentRepository.findByCommentContainingIgnoreCase(keyWord).orElseThrow(() -> new CommentNotFoundException("Could not find any comment with the keyword: " + keyWord));
 
-        return new CommentSearchResponse("success", LocalDateTime.now(), commentList);
+        return new CommentSearchResponse("success", LocalDate.now(), commentList);
     }
 
     public User findUserById(int id) {
@@ -173,6 +174,6 @@ public class UserServiceImpl implements UserService {
     public AllPostsResponse allPosts() {
         List<Post> postList = postRepository.findAll();
 
-        return new AllPostsResponse("success", LocalDateTime.now(), postList);
+        return new AllPostsResponse("success", LocalDate.now(), postList);
     }
 }

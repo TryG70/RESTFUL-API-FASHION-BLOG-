@@ -1,16 +1,19 @@
 package com.example.t_blog.response;
 
 import com.example.t_blog.model.Post;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.*;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
-@Data
+@EqualsAndHashCode
+@ToString
+@Getter
+@Setter
 @AllArgsConstructor
+@NoArgsConstructor
 public class CreatePostResponse {
 
     private String message;
-    private LocalDateTime time;
+    private LocalDate time;
     private Post post;
 }
